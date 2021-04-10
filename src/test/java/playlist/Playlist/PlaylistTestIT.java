@@ -21,6 +21,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
@@ -38,7 +43,8 @@ public class PlaylistTestIT {
         mockMvc.perform(post("/Playlists/Playlist")
                 .content(objectMapper.writeValueAsString(playlistDto))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated());
+        ).andExpect(status().isCreated()) // Follow Up to andExpect
+                .andDo(document("AddPlaylist"));;
 
     }
 
@@ -54,10 +60,16 @@ public class PlaylistTestIT {
     @DirtiesContext
     public void getPlaylistByNameTest() throws Exception {
         PlaylistDTO playlistDto = new PlaylistDTO("MyPlaylist");
-        mockMvc.perform(post("/Playlists/Playlist"));
+        mockMvc.perform(post("/Playlists/Playlist")
+                .content(objectMapper.writeValueAsString(playlistDto))
+                .contentType(MediaType.APPLICATION_JSON));
 
         mockMvc.perform(get("/Playlists/Playlist/MyPlaylist")
         ).andExpect(status().isOk())
-                .equals(jsonPath("$.name").value("Unbreakable"));
+                .andExpect(jsonPath("name").value("MyPlaylist"))
+                // Follow Up to andExpect
+                .andDo(document("Playlist", responseFields(
+                        fieldWithPath("name").description("MyPlaylist")
+                )));;
     }
 }

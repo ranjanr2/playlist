@@ -1,0 +1,15 @@
+Playlists
+
+.request
+include::{snippets}/Playlist/http-request.adoc[]
+
+.response
+include::{snippets}/Playlist/http-response.adoc[]
+
+AddPlaylist
+
+.request
+include::{snippets}/AddPlaylist/http-request.adoc[]
+
+.response
+include::{snippets}/AddPlaylist/http-response.adoc[]
