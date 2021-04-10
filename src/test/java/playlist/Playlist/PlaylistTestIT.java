@@ -72,4 +72,16 @@ public class PlaylistTestIT {
                         fieldWithPath("name").description("MyPlaylist")
                 )));;
     }
+    @Test
+    @DirtiesContext
+    public void createPlaylistwithooutNameTest() throws Exception {
+
+        PlaylistDTO playlistDto = new PlaylistDTO("  ");
+        mockMvc.perform(post("/Playlists/Playlist")
+                .content(objectMapper.writeValueAsString(playlistDto))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("message").value("Playlist Name is Required"))// Follow Up to andExpect
+                .andDo(document("AddPlaylist"));;
+          }
 }

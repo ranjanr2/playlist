@@ -19,21 +19,28 @@ public class PlaylistController {
 
     @PostMapping("/Playlist")
     @ResponseStatus(HttpStatus.CREATED)
-    public void CreateAPlaylist(@RequestBody PlaylistDTO playlistDto){
-        this.service.create(playlistDto);
+    public ResponseEntity<?> CreateAPlaylist(@RequestBody PlaylistDTO playlistDto){
+        if (playlistDto == null || playlistDto.getName().trim().isEmpty())
+        {
+            return new ResponseEntity<>(new Exception("Playlist Name is Required"), HttpStatus.OK);
+        }
+        else {
+            this.service.create(playlistDto);
+            return new ResponseEntity<String>(HttpStatus.CREATED);
+        }
     }
 
     @GetMapping("/Playlist")
-    public List<PlaylistDTO> getAllMovies() throws Exception {
+    public List<PlaylistDTO> getPlaylists() throws Exception {
         return this.service.getAllPlaylists();
     }
     @GetMapping("/Playlist/{name}")
-    public ResponseEntity<?> getMovieByTitle(@PathVariable String name) {
+    public ResponseEntity<?> getPlayListByName(@PathVariable String name) {
         PlaylistDTO playlistDto = this.service.getPlaylistByName(name);
         if (playlistDto != null) {
             return new ResponseEntity<>(playlistDto, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new Exception("Requested movie does not exist"), HttpStatus.OK);
+            return new ResponseEntity<>(new Exception("Requested Playlist does not exist"), HttpStatus.OK);
         }
     }
 
