@@ -20,4 +20,22 @@ public class PlaylistService {
                 new PlaylistEntity(playlistDto.getName()));
     }
 
+    public List<PlaylistDTO> getAllPlaylists() {
+        return playlistRepository.findAll()
+                .stream()
+                .map(playlistEntity -> {
+                    return new PlaylistDTO(playlistEntity.getName());
+                })
+                .collect(Collectors.toList());
+    }
+
+    public PlaylistDTO getPlaylistByTitle(String title) {
+        return playlistRepository.findAll()
+                .stream()
+                .filter(playlistEntity -> playlistEntity.getName().equals(title))
+                .map(playlistEntity -> { return new PlaylistDTO(playlistEntity.getName());
+                }).collect(Collectors.toList())
+                .stream().findFirst().orElse(null);
+    }
+
 }

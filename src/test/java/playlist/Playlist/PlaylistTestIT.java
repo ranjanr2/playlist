@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -38,4 +39,26 @@ public class PlaylistTestIT {
         ).andExpect(status().isCreated());
 
     }
+
+    @Test
+    @DirtiesContext
+    public void getPlaylistsNULLTest() throws Exception {
+        mockMvc.perform(get("/Playlists/Playlist")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(0));
+
+    }
+    @Test
+    @DirtiesContext
+    public void getPlaylistByNameTest() throws Exception {
+        PlaylistDTO playlistDto = new PlaylistDTO("MyPlaylist");
+        mockMvc.perform(post("/Playlists/Playlist")
+
+        mockMvc.perform(get("/Playlists/Playlist/MyPlaylist")
+        ).andExpect(status().isOk())
+                .equals(jsonPath("$.name").value("Unbreakable"));
+    }
+
+
+
 }
