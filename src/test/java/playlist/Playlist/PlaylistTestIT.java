@@ -52,13 +52,10 @@ public class PlaylistTestIT {
     @DirtiesContext
     public void getPlaylistByNameTest() throws Exception {
         PlaylistDTO playlistDto = new PlaylistDTO("MyPlaylist");
-        mockMvc.perform(post("/Playlists/Playlist")
+        mockMvc.perform(post("/Playlists/Playlist"));
 
         mockMvc.perform(get("/Playlists/Playlist/MyPlaylist")
         ).andExpect(status().isOk())
                 .equals(jsonPath("$.name").value("Unbreakable"));
     }
-
-
-
 }
