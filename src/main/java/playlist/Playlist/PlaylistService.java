@@ -38,4 +38,14 @@ public class PlaylistService {
                 .stream().findFirst().orElse(null);
     }
 
+    public PlaylistDTO getPlaylistByName(String name) {
+        return playlistRepository.findAll()
+                .stream()
+                .filter(playlistEntity -> playlistEntity.getName().equals(name))
+                .map(playlistEntity -> {
+                    return new PlaylistDTO(playlistEntity.getName());
+                }).collect(Collectors.toList())
+                .stream().findFirst().orElse(null);
+    }
+
 }
