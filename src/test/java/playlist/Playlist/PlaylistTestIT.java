@@ -19,7 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@SpringBootTest
+@AutoConfigureMockMvc
 public class PlaylistTestIT {
     @Autowired
     MockMvc mockMvc;
@@ -31,7 +32,7 @@ public class PlaylistTestIT {
     @DirtiesContext
     public void createAPlaylist() throws Exception {
         PlaylistDTO playlistDto = new PlaylistDTO("MyPlaylist");
-        mockMvc.perform(post("/Playlist")
+        mockMvc.perform(post("/Playlists/Playlist")
                 .content(objectMapper.writeValueAsString(playlistDto))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated());
